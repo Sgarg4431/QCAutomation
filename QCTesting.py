@@ -11,8 +11,6 @@ def processedFile(uploaded_file1,uploaded_file2):
     if uploaded_file1 and uploaded_file2:
         df=pd.read_csv(uploaded_file1,sep='\t')
         df_sales=pd.read_csv(uploaded_file2,sep='\t')
-        df=df.head()
-        df_sales=df_sales.head()
 
         # Overall Quantity
         print("Checking the Overall Quantity...")
