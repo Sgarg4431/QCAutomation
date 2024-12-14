@@ -11,7 +11,6 @@ def processedFile(uploaded_file1,uploaded_file2):
     if uploaded_file1 and uploaded_file2:
         df=pd.read_csv(uploaded_file1,sep='\t')
         df_sales=pd.read_csv(uploaded_file2,sep='\t')
-        
 
         # Overall Quantity
         print("Checking the Overall Quantity...")
@@ -26,7 +25,7 @@ def processedFile(uploaded_file1,uploaded_file2):
         st.text(f"The Overall quantity sum is {total_qty_sales}")
 
         # Checking for particular day
-        print("Checking for particular day...")
+        print("Checking for particular day...") 
         random_day=df["day"].sample(n=1).iloc[0]
         st.text(f"Checking for particular day...{random_day}")
         mask_day=(df["day"]==random_day) & (df["quantity"]>=0)
@@ -51,11 +50,12 @@ def processedFile(uploaded_file1,uploaded_file2):
         st.text(f"The sum of quantity for ean {random_ean} in processed file is {total_qty_ean}")
         st.text(f"The sum of quantity for ean {random_ean} is {total_qty_ean_sales}")
 
-        # Checking for one channel
+        # Checking for one channel and one store
         random_channel=df["channel"].sample(n=1).iloc[0]
-        st.text(f"Checking for channel...{random_channel}")
-        mask_channel=(df["channel"]==random_channel) & (df["quantity"]>=0)
-        mask_channel_sales=(df_sales["channel"]==random_channel) & (df_sales["quantity"]>=0)
+        random_storeCode=df["store_code"].sample(n=1).iloc[0]
+        st.text(f"Checking for channel {random_channel} and store code {random_storeCode}")
+        mask_channel=(df["channel"]==random_channel) & (df["quantity"]>=0 ) & (df["store_code"]==random_storeCode)
+        mask_channel_sales=(df_sales["channel"]==random_channel) & (df_sales["quantity"]>=0) & (df_sales["store_code"]==random_storeCode)
         filtered_df_channel=df.loc[mask_channel]
         filtered_df_channel_sales=df_sales.loc[mask_channel_sales]
         total_qty_channel=filtered_df_channel["quantity"].sum()
