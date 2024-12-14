@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from datetime import datetime
 
 st.title("QCing the Processed Sales File")
 
@@ -10,7 +11,8 @@ def processedFile(uploaded_file1,uploaded_file2):
     if uploaded_file1 and uploaded_file2:
         df=pd.read_csv(uploaded_file1,sep='\t')
         df_sales=pd.read_csv(uploaded_file2,sep='\t')
-      
+        df=df.head()
+        df_sales=df_sales.head()
 
         # Overall Quantity
         print("Checking the Overall Quantity...")
@@ -26,6 +28,10 @@ def processedFile(uploaded_file1,uploaded_file2):
 
         # Checking for particular day
         print("Checking for particular day...")
+        df["day"] = pd.to_datetime(df["day"])
+        df["day"] = df['day'].dt.strftime('%Y-%m-%d')
+        df_sales["day"] = pd.to_datetime(df_sales["day"])
+        df_sales["day"] = df_sales['day'].dt.strftime('%Y-%m-%d')
         random_day=df["day"].sample(n=1).iloc[0]
         st.text(f"Checking for particular day...{random_day}")
         mask_day=(df["day"]==random_day) & (df["quantity"]>=0)
@@ -82,3 +88,4 @@ def processedFile(uploaded_file1,uploaded_file2):
 
 
 processedFile(uploaded_file1,uploaded_file2)
+
