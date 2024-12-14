@@ -11,7 +11,6 @@ def processedFile(uploaded_file1,uploaded_file2):
     if uploaded_file1 and uploaded_file2:
         df=pd.read_csv(uploaded_file1,sep='\t')
         df_sales=pd.read_csv(uploaded_file2,sep='\t')
-       
 
         # Overall Quantity
         print("Checking the Overall Quantity...")
@@ -62,8 +61,8 @@ def processedFile(uploaded_file1,uploaded_file2):
         filtered_df_channel_sales=df_sales.loc[mask_channel_sales]
         total_qty_channel=filtered_df_channel["quantity"].sum()
         total_qty_channel_sales=filtered_df_channel_sales["quantity"].sum()
-        st.text(f"The sum of quantity for {random_channel} in processed file is {total_qty_channel}")
-        st.text(f"The sum of quantity for {random_channel} is {total_qty_channel_sales}")
+        st.text(f"The sum of quantity for {random_channel} and {random_storeCode} in processed file is {total_qty_channel}")
+        st.text(f"The sum of quantity for {random_channel} and {random_storeCode} is {total_qty_channel_sales}")
 
         # Checking for one day and one ean 
         random_value_day=(df["day"].sample(n=1).iloc[0])
@@ -76,8 +75,8 @@ def processedFile(uploaded_file1,uploaded_file2):
         filtered_df_final_sales=df_sales.loc[mask_final_sales]
         total_qty_final=filtered_df_final["quantity"].sum()
         total_qty_final_sales=filtered_df_final_sales["quantity"].sum()
-        st.text(f"The sum of quantity on {random_value_day} in processed file is {total_qty_final}")
-        st.text(f"The sum of quantity on {random_value_day} is {total_qty_final_sales}")
+        st.text(f"The sum of quantity on {random_value_day} and {random_value_ean} in processed file is {total_qty_final}")
+        st.text(f"The sum of quantity on {random_value_day} and and {random_value_ean} is {total_qty_final_sales}")
 
 
 
