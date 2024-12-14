@@ -11,7 +11,7 @@ def processedFile(uploaded_file1,uploaded_file2):
     if uploaded_file1 and uploaded_file2:
         df=pd.read_csv(uploaded_file1,sep='\t')
         df_sales=pd.read_csv(uploaded_file2,sep='\t')
-        
+       
 
         # Overall Quantity
         print("Checking the Overall Quantity...")
@@ -68,9 +68,10 @@ def processedFile(uploaded_file1,uploaded_file2):
         # Checking for one day and one ean 
         random_value_day=(df["day"].sample(n=1).iloc[0])
         df_rand_ean=df.loc[(df["day"]==random_value_day)]
+        random_value_ean=df_rand_ean["ean"].sample(n=1).iloc[0]
         st.text(f"Checking for day:{random_value_day}")
-        mask_final=(df["day"]==random_value_day) & (df["quantity"]>=0) & (df["ean"]==df_rand_ean)
-        mask_final_sales=(df_sales["day"]==random_value_day) & (df_sales["quantity"]>=0) & (df_sales["ean"]==df_rand_ean)
+        mask_final=(df["day"]==random_value_day) & (df["quantity"]>=0) & (df["ean"]==random_value_ean)
+        mask_final_sales=(df_sales["day"]==random_value_day) & (df_sales["quantity"]>=0) & (df_sales["ean"]==random_value_ean)
         filtered_df_final=df.loc[mask_final]
         filtered_df_final_sales=df_sales.loc[mask_final_sales]
         total_qty_final=filtered_df_final["quantity"].sum()
