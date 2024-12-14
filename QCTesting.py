@@ -27,10 +27,6 @@ def processedFile(uploaded_file1,uploaded_file2):
 
         # Checking for particular day
         print("Checking for particular day...")
-        df["day"] = pd.to_datetime(df["day"])
-        df["day"] = df['day'].dt.strftime('%Y-%m-%d')
-        df_sales["day"] = pd.to_datetime(df_sales["day"])
-        df_sales["day"] = df_sales['day'].dt.strftime('%Y-%m-%d')
         random_day=df["day"].sample(n=1).iloc[0]
         st.text(f"Checking for particular day...{random_day}")
         mask_day=(df["day"]==random_day) & (df["quantity"]>=0)
