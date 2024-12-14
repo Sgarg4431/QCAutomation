@@ -11,6 +11,8 @@ def processedFile(uploaded_file1,uploaded_file2):
     if uploaded_file1 and uploaded_file2:
         df=pd.read_csv(uploaded_file1,sep='\t')
         df_sales=pd.read_csv(uploaded_file2,sep='\t')
+        df=df.head()
+        df_sales=df_sales.head()
 
         # Overall Quantity
         print("Checking the Overall Quantity...")
@@ -26,6 +28,10 @@ def processedFile(uploaded_file1,uploaded_file2):
 
         # Checking for particular day
         print("Checking for particular day...")
+        df["day"] = pd.to_datetime(df["day"])
+        df["day"] = df['day'].dt.strftime('%Y-%m-%d')
+        df_sales["day"] = pd.to_datetime(df_sales["day"])
+        df_sales["day"] = df_sales['day'].dt.strftime('%Y-%m-%d')
         random_day=df["day"].sample(n=1).iloc[0]
         st.text(f"Checking for particular day...{random_day}")
         mask_day=(df["day"]==random_day) & (df["quantity"]>=0)
@@ -35,6 +41,7 @@ def processedFile(uploaded_file1,uploaded_file2):
         total_qty_day=filtered_df_day["quantity"].sum()
         total_qty_day_sales=filtered_df_day_sales["quantity"].sum()
         print(f"The sum of quantity in processed file at date ${random_day} is ${total_qty_day}")
+        st.text(f"The sum of quantity at {random_day} in processed file is {total_qty_day}")
         st.text(f"The sum of quantity at {random_day} is {total_qty_day_sales}")
         
         # Checking for particular ean
@@ -43,7 +50,7 @@ def processedFile(uploaded_file1,uploaded_file2):
         mask_ean=(df["ean"]==random_ean) & (df["quantity"]>=0)
         mask_ean2=(df_sales["ean"]==random_ean) & (df_sales["quantity"]>=0)
         filtered_df_ean=df.loc[mask_ean]
-        filtered_df_ean_sales=df_sales.loc[mask_ean]
+        filtered_df_ean_sales=df_sales.loc[mask_ean2]
         total_qty_ean=filtered_df_ean["quantity"].sum()
         total_qty_ean_sales=filtered_df_ean_sales["quantity"].sum()
         st.text(f"The sum of quantity for ean {random_ean} in processed file is {total_qty_ean}")
