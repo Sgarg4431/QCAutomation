@@ -11,7 +11,7 @@ def processedFile(uploaded_file1,uploaded_file2):
     if uploaded_file1 and uploaded_file2:
         df=pd.read_csv(uploaded_file1,sep='\t')
         df_sales=pd.read_csv(uploaded_file2,sep='\t')
-        
+
         # Overall Quantity
         print("Checking the Overall Quantity...")
         mask_qty=(df["quantity"]>=0)
@@ -51,7 +51,7 @@ def processedFile(uploaded_file1,uploaded_file2):
         st.text(f"The sum of quantity for ean {random_ean} is {total_qty_ean_sales}")
 
         # Checking for one channel and one store
-        random_channel=(df["channel"].sample(n=1).iloc[0]) & df["store_code"].sample(n=1).iloc[0]
+        random_channel=(df["channel"].sample(n=1).iloc[0]) & (df["store_code"].sample(n=1).iloc[0])
         #random_storeCode=df["store_code"].sample(n=1).iloc[0]
         st.text(f"Checking for channel {random_channel}")
         mask_channel=(df["channel"]==random_channel) & (df["quantity"]>=0 )
