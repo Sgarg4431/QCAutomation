@@ -11,6 +11,7 @@ def processedFile(uploaded_file1,uploaded_file2):
     if uploaded_file1 and uploaded_file2:
         df=pd.read_csv(uploaded_file1,sep='\t')
         df_sales=pd.read_csv(uploaded_file2,sep='\t')
+        
 
         # Overall Quantity
         print("Checking the Overall Quantity...")
@@ -51,11 +52,12 @@ def processedFile(uploaded_file1,uploaded_file2):
         st.text(f"The sum of quantity for ean {random_ean} is {total_qty_ean_sales}")
 
         # Checking for one channel and one store
-        random_channel=(df["channel"].sample(n=1).iloc[0]) & (df["store_code"].sample(n=1).iloc[0])
-        #random_storeCode=df["store_code"].sample(n=1).iloc[0]
+        random_channel=df["channel"].sample(n=1).iloc[0]
+        df_rand=df.loc[(df["channel"]==random_channel)]
+        random_storeCode=df_rand["store_code"].sample(n=1).iloc[0]
         st.text(f"Checking for channel {random_channel}")
-        mask_channel=(df["channel"]==random_channel) & (df["quantity"]>=0 )
-        mask_channel_sales=(df_sales["channel"]==random_channel) & (df_sales["quantity"]>=0)
+        mask_channel=(df["channel"]==random_channel) & (df["quantity"]>=0 ) & (df["store_code"]==random_storeCode)
+        mask_channel_sales=(df_sales["channel"]==random_channel) & (df_sales["quantity"]>=0) & (df_sales["store_code"]==random_storeCode)
         filtered_df_channel=df.loc[mask_channel]
         filtered_df_channel_sales=df_sales.loc[mask_channel_sales]
         total_qty_channel=filtered_df_channel["quantity"].sum()
@@ -64,11 +66,11 @@ def processedFile(uploaded_file1,uploaded_file2):
         st.text(f"The sum of quantity for {random_channel} is {total_qty_channel_sales}")
 
         # Checking for one day and one ean 
-        random_value_day=(df["day"].sample(n=1).iloc[0]) & (df["ean"].sample(n=1).iloc[0])
-        #random_value_ean=df["ean"].sample(n=1).iloc[0]
+        random_value_day=(df["day"].sample(n=1).iloc[0])
+        df_rand_ean=df.loc[(df["day"]==random_value_day)]
         st.text(f"Checking for day:{random_value_day}")
-        mask_final=(df["day"]==random_value_day) & (df["quantity"]>=0)
-        mask_final_sales=(df_sales["day"]==random_value_day) & (df_sales["quantity"]>=0)
+        mask_final=(df["day"]==random_value_day) & (df["quantity"]>=0) & (df["ean"]==df_rand_ean)
+        mask_final_sales=(df_sales["day"]==random_value_day) & (df_sales["quantity"]>=0) & (df_sales["ean"]==df_rand_ean)
         filtered_df_final=df.loc[mask_final]
         filtered_df_final_sales=df_sales.loc[mask_final_sales]
         total_qty_final=filtered_df_final["quantity"].sum()
